@@ -8,5 +8,5 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('icr-2025');
+  protected readonly title = signal('Moja aplikacija');
 }
