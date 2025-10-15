@@ -1,1 +1,5 @@
-<p>home works!</p>
+<ul>
+    @for (movie of movies(); track $index) {
+        <li>{{movie.title}}</li>
+    }
+</ul>
