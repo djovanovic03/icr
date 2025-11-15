@@ -1,3 +1,4 @@
+import { OrderModel } from "../models/order.model";
 import { UserModel } from "../models/user.model";
 
 export class UserService {
@@ -36,7 +37,7 @@ export class UserService {
     static login(email: string, password: string) {
         try {
             const user = this.findUserByEmail(email)
-            if(user.password === password) {
+            if (user.password === password) {
                 localStorage.setItem(this.ACTIVE_KEY, user.email)
                 return true
             }
@@ -58,5 +59,32 @@ export class UserService {
 
     static logout() {
         localStorage.removeItem(this.ACTIVE_KEY)
+    }
+
+    static createReservation(order: OrderModel) {
+        const current = localStorage.getItem(this.ACTIVE_KEY)
+        const all = this.getUsers()
+
+        for (let u of all) {
+            if (u.email === current) {
+                u.data.push(order)
+            }
+        }
+
+        localStorage.setItem(this.USERS_KEY, JSON.stringify(all))
+    }
+
+    static updateOrder(orderId: string, status: 'na' | 'paid' | 'cancelled' | 'liked' | 'disliked') {
+        const all = this.getUsers()
+
+        for (let u of all) {
+            for(let o of u.data) {
+                if (o.orderId === orderId) {
+                    o.status = status
+                }
+            }
+        }
+
+        localStorage.setItem(this.USERS_KEY, JSON.stringify(all))
     }
 }
